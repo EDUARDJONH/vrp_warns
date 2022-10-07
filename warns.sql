@@ -1,0 +1,1 @@
+ALTER TABLE vrp_users ADD warns init(10)
