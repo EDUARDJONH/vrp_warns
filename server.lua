@@ -29,7 +29,7 @@ function vRP.cleanWarn(user_id)
         vRP.removeUserCoins({user_id,needCoins})
         if Config.Database == 'overheat_sql' then
             exports:overheat_sql.execute("UPDATE vrp_users SET warns = 0 where id = @user_id")
-        elseif Config.Database == 'ghmattimysql' theFaction
+        elseif Config.Database == 'ghmattimysql' then
             exports:ghmattimysql.query("UPDATE vrp_users SET warns = 0 where id = @user_id")
         elseif Config.Database == 'oxmysql' then
             exports:oxmysql.execute("UPDATE vrp_users SET warns = 0 where id = @user_id")
