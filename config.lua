@@ -8,6 +8,10 @@ Config.ClearWarnCmd = 'clearwarns' -- sets the clear warns command
 
 Config.AdminClearWarn = 'aclearwarn' -- sets the free warn removal command - if a warn is given by mistake 
 
+Config.CheckWarnCmd = 'checkwarn' -- sets the check warnings command 
+
+Config.CheckWarnPermission = 'admin.checkwarn' -- sets the check warnings permission, found in @vRP/cfg/groups.lua
+
 Config.AdminClearWarnPermission = 'admin.clearwarn' -- sets the permmission required, found in @vRP/cfg/groups.lua
 
 Config.Database = 'oxmysql' -- 'oxmysql' / 'ghmattimysql'
@@ -31,4 +35,3 @@ Config.AdminGroups = {
     'moderator',
     'helper'
 }
-
