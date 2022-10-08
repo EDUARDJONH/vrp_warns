@@ -39,6 +39,13 @@ function vRP.cleanWarn(user_id)
     end
 end
 
+function vRP.getUserWarns(user_id)
+    local tmp = vRP.getUserTmpTable(user_id)
+    if tmp then
+        user_warns = tmp.warns
+    end
+    return user_warns or 0
+end
 
 
 RegisterCommand(Config.WarnCommand, function(source, args)
@@ -51,7 +58,7 @@ RegisterCommand(Config.WarnCommand, function(source, args)
             if args[1] ~= "" and args[1] ~= nil then
                 if args[1] > 0 and args[1] ~= "0" then
                     if args[2] ~= "" and args[2] ~= nil then
-                        if vRP.hasGroup({user_id,Config.AdminGroups}) then
+                        if vRP.isUserHelper({user_id}) then
                             vRP.request(user_id,"Esti sigur ca vrei sa ii dai WARN jucatorului " .. vRP.getPlayerName({target_src}) .. " [" .. target_id .. "] ?", 15, function(user_id, ok)
                                 if ok then
                                     vRP.warnUser({target_id})
@@ -62,6 +69,22 @@ RegisterCommand(Config.WarnCommand, function(source, args)
                                             TriggerClientEvent("vrp_warns:autoBan", target_id)
                                             TriggerClientEvent("chatMessage", -1, "^1BAN^0: Jucatorul ^1" .. vRP.getPlayerName({target_id}) .. "^0 [^1" .. target_id .."^0] a fost banat de catre admin-ul ^1" .. vRP.getPlayerName({user_id}) .. "^0[^1" .. user_id .."^0] pentru ^9" .. Config.BanTime .. " zile^0")
                                             TriggerClientEvent("chatMessage", -1, "^1MOTIV^0: Acumulare warn-uri")
+                                            local embed = {
+                                                {
+                                                    ["color"] = 0xcf0000,
+                                                    ["title"] = "**WARN OVERHEAT**",
+                                                    ["desciption"] = {
+                                                        "Admin-ul: **" .. vRP.getPlayerName({user_id}) .." [" .. user_id .. "]** i-a dat warn lui: **" .. vRP.getPlayerName({target_id}) .." [" .. target_id .. "]**",
+                                                        "Motiv: **" .. reason.. "**",
+                                                        "Warn-uri: **" .. vRP.getUserWarns({target_id}) .. "/" .. Config.MaxWarns .."** *(Ban Provizoriu " .. Config.BanTime .. " zile)*",
+                                                    },
+                                                    ["thumbnail"] = {},
+                                                    ["footer"] = {
+                                                        ["text"] = "",
+                                                    },
+                                                }
+                                            }
+                                            PerformHttpRequest(Config.Webhook, function(err, text, headers) end, 'POST', json.encode({embeds = embed}), { ['Content-Type'] = 'application/json' })
                                         else
                                             vRP.sendStaffMessage({"[^9STAFF^0] Jucatorul ^9" .. vRP.getPlayerName({target_id}) .. "^0 [^9" .. target_id .. "^0] a acumulat ^9" .. Config.MaxWarns .."/" .. Config.MaxWarns .. "^0 warn-uri!"})
                                         end
@@ -72,6 +95,22 @@ RegisterCommand(Config.WarnCommand, function(source, args)
                                         vRPclient.notify(target_id, {"Info: Ai acumulat " .. user_warns .. "/" .. Config.MaxWarns .. " warn-uri!"})
                                         TriggerClientEvent("chatMessage", -1, "^1WARN^0: Admin-ul ^1" .. vRP.getPlayerName({user_id}) .. "^0 [^1" .. user_id.."^0] i-a dat ^9 WARN^0 lui ^1" .. vRP.getPlayerName({target_id}) .."^0 [^1" .. target_id .."^0] ")
                                         TriggerClientEvent("chatMessage", -1, "^1MOTIV^0: " .. reason .. " ")
+                                        local second_embed = {
+                                            {
+                                                ["color"] = 0xcf0000,
+                                                ["title"] = "**WARN OVERHEAT**",
+                                                ["desciption"] = {
+                                                    "Admin-ul: **" .. vRP.getPlayerName({user_id}) .." [" .. user_id .. "]** i-a dat warn lui: **" .. vRP.getPlayerName({target_id}) .." [" .. target_id .. "]**",
+                                                    "Motiv: **" .. reason.. "**",
+                                                    "Warn-uri: **" .. vRP.getUserWarns({target_id}) .. "/" .. Config.MaxWarns .."**",
+                                                },
+                                                ["thumbnail"] = {},
+                                                ["footer"] = {
+                                                    ["text"] = "",
+                                                },
+                                            }
+                                        }
+                                        PerformHttpRequest(Config.Webhook, function(err, text, headers) end, 'POST', json.encode({embeds = second_embed}), { ['Content-Type'] = 'application/json' })
                                     end
                                 else
                                     vRPclient.notify(user_id,{"Info: Ai ales sa nu ii dai warn jucatorului!"})
@@ -125,5 +164,5 @@ end)
 
 
 
-    
 
+    
