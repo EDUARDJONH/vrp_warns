@@ -89,10 +89,10 @@ RegisterCommand(Config.WarnCommand, function(source, args)
                                             vRP.sendStaffMessage({"[^9STAFF^0] Jucatorul ^9" .. vRP.getPlayerName({target_id}) .. "^0 [^9" .. target_id .. "^0] a acumulat ^9" .. Config.MaxWarns .."/" .. Config.MaxWarns .. "^0 warn-uri!"})
                                         end
                                     else
-                                        vRPclient.notify(user_id, {"Succes: I-ai dat warn lui " .. vRP.getPlayerName({target_id}) .. " [" .. target_id .."] pentru motivul " .. reason .. " "})
-                                        vRPclient.notify(user_id, {"Info: " .. vRP.getPlayerName({target_id}) .. " [" .. target_id .."] are acum " .. user_warns .."/" .. Config.MaxWarns .." warn-uri!"})
-                                        vRPclient.notify(target_id, {"Info: Ai primit warn de la admin-ul " .. vRP.getPlayerName({user_id}) .. " [" .. user_id .."] pe motiv " .. reason .. " "})
-                                        vRPclient.notify(target_id, {"Info: Ai acumulat " .. user_warns .. "/" .. Config.MaxWarns .. " warn-uri!"})
+                                        vRPclient.notify(source, {"Succes: I-ai dat warn lui " .. vRP.getPlayerName({target_id}) .. " [" .. target_id .."] pentru motivul " .. reason .. " "})
+                                        vRPclient.notify(source, {"Info: " .. vRP.getPlayerName({target_id}) .. " [" .. target_id .."] are acum " .. user_warns .."/" .. Config.MaxWarns .." warn-uri!"})
+                                        vRPclient.notify(target_src, {"Info: Ai primit warn de la admin-ul " .. vRP.getPlayerName({user_id}) .. " [" .. user_id .."] pe motiv " .. reason .. " "})
+                                        vRPclient.notify(target_src, {"Info: Ai acumulat " .. user_warns .. "/" .. Config.MaxWarns .. " warn-uri!"})
                                         TriggerClientEvent("chatMessage", -1, "^1WARN^0: Admin-ul ^1" .. vRP.getPlayerName({user_id}) .. "^0 [^1" .. user_id.."^0] i-a dat ^9 WARN^0 lui ^1" .. vRP.getPlayerName({target_id}) .."^0 [^1" .. target_id .."^0] ")
                                         TriggerClientEvent("chatMessage", -1, "^1MOTIV^0: " .. reason .. " ")
                                         local second_embed = {
@@ -113,7 +113,7 @@ RegisterCommand(Config.WarnCommand, function(source, args)
                                         PerformHttpRequest(Config.Webhook, function(err, text, headers) end, 'POST', json.encode({embeds = second_embed}), { ['Content-Type'] = 'application/json' })
                                     end
                                 else
-                                    vRPclient.notify(user_id,{"Info: Ai ales sa nu ii dai warn jucatorului!"})
+                                    vRPclient.notify(source,{"Info: Ai ales sa nu ii dai warn jucatorului!"})
                                 end
                             end)
                         else
