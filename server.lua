@@ -161,6 +161,26 @@ RegisterCommand(Config.AdminClearWarn, function(source, args)
     end
 end)
 
+RegisterCommand(Config.CheckWarnCmd, function(source, args)
+    local user_id = vRP.getUserId({source})
+    local target_id = parseInt(args[1])
+    if args[1] ~= nil and args[1] ~= "0" then
+        if args[1] > 0 and args[1] ~= "0" then 
+            if vRP.hasPermission({user_id,Config.CheckWarnPermission}) then
+                TriggerClientEvent("chatMessage", source, "^1WARN^0: Jucatorul ^1" .. vRP.getPlayerName({target_id}) .. "^0 [^1" .. target_id .."^0] are ^5" .. vRP.getUserWarns({target_id}) .."^9 WARN-URI^0")
+            else
+                TriggerClientEvent("chatMessage", source, "^1WARN^0: Nu ai acces la aceasta comanda")
+            end
+        else
+            TriggerClientEvent("chatMessage", source, "^1WARN^0: @user_id este  invalid")
+        end
+    else
+        TriggerClientEvent("chatMessage", source, "^1WARN^0: Jucatorul nu este conectat")
+    end
+end)
+
+
+
 
 
 
